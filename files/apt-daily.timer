@@ -1,0 +1,12 @@
+[Unit]
+Description=Daily apt download activities
+
+[Timer]
+#OnCalendar=*-*-* 6,18:00
+#RandomizedDelaySec=12h
+OnStartupSec=25s
+RandomizedDelaySec=5s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,30 @@
+---
+unattended_upgrades:
+  apt:
+    state: present
+  config:
+    src: 50unattended-upgrades.j2
+    dst: /etc/apt/apt.conf.d/50unattended-upgrades
+  apt_daily_upgrade:
+    service:
+      src: apt-daily-upgrade.service
+      dst: /etc/systemd/system/apt-daily-upgrade.service
+      enabled: true
+    timer:
+      src:
+      dst:
+      enabled: false
+  apt_daily:
+    service:
+      src: apt-daily.service
+      dst: /etc/systemd/system/apt-daily.service
+      enabled: true
+    timer:
+      src: apt-daily.timer
+      dst: /etc/systemd/system/apt-daily.timer
+      enabled: true
+  listchanges:
+    apt:
+      state: present
+    config:
+      src:

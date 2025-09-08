@@ -1,0 +1,17 @@
+# Calls apt-daily-upgrade.service
+# Which call /usr/lib/apt/apt.systemd.daily install
+# NOT USED BECAUSE SERVICE UNIT IS INSTALLED BEFORE SHUTDOWN
+
+[Unit]
+Description=Daily apt upgrade and clean activities
+After=apt-daily.timer
+                                                                                                                                                                                             
+[Timer]
+#OnCalendar=*-*-* 6:00
+#OnCalendar=Tue *-*-* 16:00
+OnStartupSec=10s
+RandomizedDelaySec=3s
+Persistent=true                                                                                                                                                                                             
+                                                                                                                                                                                                    
+[Install]
+WantedBy=timers.target

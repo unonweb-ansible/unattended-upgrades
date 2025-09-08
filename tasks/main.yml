@@ -1,0 +1,139 @@
+---
+- name: unattended-upgrades role
+  tags:
+  - unattended-upgrades
+  block:
+
+  # apt
+  - name: Apt state {{ unattended_upgrades.apt.state }}
+    become: true
+    ansible.builtin.apt:
+      state: "{{ unattended_upgrades.apt.state }}"
+      name:
+      - unattended-upgrades
+      - needrestart
+      - powermgmt-base
+  
+  # template
+  - when: unattended_upgrades.config.src != None
+    name: Template 50unattended-upgrades
+    become: true
+    notify: Restart unattended-upgrades
+    ansible.builtin.template:
+      src: "{{ unattended_upgrades.config.src }}"
+      dest: "{{ unattended_upgrades.config.dst }}"
+      force: true # the remote file will be replaced when contents are different than the source (default) 
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
+
+  # listchanges
+  - when: 
+    - unattended_upgrades.listchanges.apt.state != None
+    - unattended_upgrades.listchanges.apt.state != absent
+    block:
+
+    # apt listchanges
+    - name: Apt state {{ unattended_upgrades.listchanges.apt.state }}
+      become: true
+      ansible.builtin.apt:
+        state: "{{ unattended_upgrades.listchanges.apt.state }}"
+        name: apt-listchanges
+
+    # listchanges
+    - when: unattended_upgrades.listchanges.config.src != None
+      name: Copy listchanges.conf
+      become: true
+      ansible.builtin.copy:
+        src: "{{ unattended_upgrades.listchanges.config.src }}"
+        dest: /etc/apt/listchanges.conf
+        force: true # the remote file will be replaced when contents are different than the source
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+  
+  # apt-daily-upgrade
+  - block:
+
+    # cp service unit files
+    - when: unattended_upgrades.apt_daily_upgrade.service.src != None
+      name: Copy unit files
+      become: true
+      notify: Systemd daemon-reload
+      ansible.builtin.copy:
+        src: "{{ unattended_upgrades.apt_daily_upgrade.service.src }}"
+        dest: "{{ unattended_upgrades.apt_daily_upgrade.service.dst }}"
+        force: true
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+    
+    # enable/disable service
+    - name: Enable/Disable apt-daily-upgrade.service
+      become: true
+      ansible.builtin.systemd_service:
+        enabled: "{{ unattended_upgrades.apt_daily_upgrade.service.enabled }}"
+        name: apt-daily-upgrade.service
+
+    # cp timer unit files
+    - when: unattended_upgrades.apt_daily_upgrade.timer.src != None
+      name: Copy unit files
+      become: true
+      notify: Systemd daemon-reload
+      ansible.builtin.copy:
+        src: "{{ unattended_upgrades.apt_daily_upgrade.timer.src }}"
+        dest: "{{ unattended_upgrades.apt_daily_upgrade.timer.dst }}"
+        force: true
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+
+    # enable/disable timer
+    - name: Enable/Disable apt-daily-upgrade.timer
+      become: true
+      ansible.builtin.systemd_service:
+        enabled: "{{ unattended_upgrades.apt_daily_upgrade.timer.enabled }}"
+        name: apt-daily.timer
+
+  # apt-daily
+  - block:
+    
+    # cp service unit files
+    - when: unattended_upgrades.apt_daily.service.src != None
+      name: Copy unit files
+      become: true
+      notify: Systemd daemon-reload
+      ansible.builtin.copy:
+        src: "{{ unattended_upgrades.apt_daily.service.src }}"
+        dest: "{{ unattended_upgrades.apt_daily.service.dst }}"
+        force: true
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+
+    # enable/disable service
+    - name: Enable/Disable apt-daily.service
+      become: true
+      ansible.builtin.systemd_service:
+        enabled: "{{ unattended_upgrades.apt_daily.service.enabled }}"
+        name: apt-daily.service
+
+    # cp timer unit files
+    - when: unattended_upgrades.apt_daily.timer.src != None
+      name: Copy unit files
+      become: true
+      notify: Systemd daemon-reload
+      ansible.builtin.copy:
+        src: "{{ unattended_upgrades.apt_daily.timer.src }}"
+        dest: "{{ unattended_upgrades.apt_daily.timer.dst }}"
+        force: true
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+    
+    # enable/disable timer
+    - name: Enable/Disable apt-daily.timer
+      become: true
+      ansible.builtin.systemd_service:
+        enabled: "{{ unattended_upgrades.apt_daily.timer.enabled }}"
+        name: apt-daily.timer

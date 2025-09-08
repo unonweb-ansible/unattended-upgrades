@@ -1,0 +1,17 @@
+# Calls /usr/lib/apt/apt.systemd.daily install
+
+[Unit]                                                                                                                                                                                                             
+Description=Daily apt upgrade and clean activities
+DefaultDependencies=no
+After=apt-daily.service network.target network-online.target systemd-networkd.service NetworkManager.service connman.service
+Before=shutdown.target halt.target
+
+[Service]
+Type=oneshot
+ExecStartPre=-/usr/lib/apt/apt-helper wait-online
+ExecStart=/usr/lib/apt/apt.systemd.daily install
+KillMode=process
+TimeoutStopSec=900
+
+[Install]
+WantedBy=shutdown.target halt.target
