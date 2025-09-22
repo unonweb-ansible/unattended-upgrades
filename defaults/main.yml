@@ -7,21 +7,17 @@ unattended_upgrades:
     dst: /etc/apt/apt.conf.d/50unattended-upgrades
   apt_daily_upgrade:
     service:
-      src: apt-daily-upgrade.service
-      dst: /etc/systemd/system/apt-daily-upgrade.service
+      src: # --> /etc/systemd/system/apt-daily-upgrade.service.d/override.conf
       enabled: true
     timer:
-      src:
-      dst:
+      src: # --> /etc/systemd/system/apt-daily.timer.d/override.conf
       enabled: false
   apt_daily:
     service:
-      src: apt-daily.service
-      dst: /etc/systemd/system/apt-daily.service
+      src: # --> /etc/systemd/system/apt-daily.service.d/override.conf
       enabled: true
     timer:
-      src: apt-daily.timer
-      dst: /etc/systemd/system/apt-daily.timer
+      src: # --> /etc/systemd/system/apt-daily.timer.d/override.conf
       enabled: true
   listchanges:
     apt:
