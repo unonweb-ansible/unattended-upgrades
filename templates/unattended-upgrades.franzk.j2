@@ -47,12 +47,12 @@ Unattended-Upgrade::Origins-Pattern {
         // Software will be the latest available for the named release,
         // but the Debian release itself will not be automatically upgraded.
         //"origin=code stable,codename=stable";
-        "origin=namespaces/moz-fx-productdelivery-pr-38b5/repositories/mozilla,codename=mozilla";
-        "origin=Debian,codename=${distro_codename}-security,archive=stable-security";
-        "origin=Debian,codename=${distro_codename},archive=stable";
-        "origin=Debian,codename=${distro_codename}-updates,archive=stable-updates";
+        //"origin=namespaces/moz-fx-productdelivery-pr-38b5/repositories/mozilla,codename=mozilla";
+        //"origin=Debian,codename=${distro_codename}-security,archive=stable-security";
+        //"origin=Debian,codename=${distro_codename},archive=stable";
+        //"origin=Debian,codename=${distro_codename}-updates,archive=stable-updates";
         //"origin=Debian,codename=${distro_codename}-backports,archive=stable-backports";
-
+		"origin=*";
         // Archive or Suite based matching:
         // Note that this will silently match a different release after
         // migration to the specified archive (e.g. testing becomes the
