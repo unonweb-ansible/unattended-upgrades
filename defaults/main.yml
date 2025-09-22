@@ -3,7 +3,7 @@ unattended_upgrades:
   apt:
     state: present
   config:
-    src: 50unattended-upgrades.j2
+    src:
     dst: /etc/apt/apt.conf.d/50unattended-upgrades
   apt_daily_upgrade:
     service:

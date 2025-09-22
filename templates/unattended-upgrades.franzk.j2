@@ -50,36 +50,36 @@ Unattended-Upgrade::Origins-Pattern {
         "origin=namespaces/moz-fx-productdelivery-pr-38b5/repositories/mozilla,codename=mozilla";
         "origin=Debian,codename=${distro_codename}-security,archive=stable-security";
         "origin=Debian,codename=${distro_codename},archive=stable";
-        //"origin=Debian,codename=${distro_codename}-updates,archive=stable-updates";
+        "origin=Debian,codename=${distro_codename}-updates,archive=stable-updates";
         //"origin=Debian,codename=${distro_codename}-backports,archive=stable-backports";
 
         // Archive or Suite based matching:
         // Note that this will silently match a different release after
         // migration to the specified archive (e.g. testing becomes the
         // new stable).
-//      "o=Debian,a=stable";
-//      "o=Debian,a=stable-updates";
-//      "o=Debian,a=proposed-updates";
-//      "o=Debian Backports,a=${distro_codename}-backports,l=Debian Backports";
+		//      "o=Debian,a=stable";
+		//      "o=Debian,a=stable-updates";
+		//      "o=Debian,a=proposed-updates";
+		//      "o=Debian Backports,a=${distro_codename}-backports,l=Debian Backports";
 };
 
 // Python regular expressions, matching packages to exclude from upgrading
 Unattended-Upgrade::Package-Blacklist {
     // The following matches all packages starting with linux-
-//  "linux-";
+	//  "linux-";
 
     // Use $ to explicitely define the end of a package name. Without
     // the $, "libc6" would match all of them.
-//  "libc6$";
-//  "libc6-dev$";
-//  "libc6-i686$";
+	//  "libc6$";
+	//  "libc6-dev$";
+	//  "libc6-i686$";
 
     // Special characters need escaping
-//  "libstdc\+\+6$";
+	//  "libstdc\+\+6$";
 
     // The following matches packages like xen-system-amd64, xen-utils-4.1,
     // xenstore-utils and libxenstore3.0
-//  "(lib)?xen(store)?";
+	//  "(lib)?xen(store)?";
 
     // For more information about Python regular expressions, see
     // https://docs.python.org/3/howto/regex.html
