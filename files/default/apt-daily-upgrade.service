@@ -3,8 +3,14 @@
 [Unit]                                                                                                                                                                                                             
 Description=Daily apt upgrade and clean activities
 DefaultDependencies=no
-After=apt-daily.service network.target network-online.target systemd-networkd.service NetworkManager.service connman.service
-Before=shutdown.target halt.target
+After=apt-daily.service
+After=network.target
+After=network-online.target
+After=systemd-networkd.service
+After=NetworkManager.service
+After=connman.service
+Before=shutdown.target
+Before=halt.target
 
 [Service]
 Type=oneshot
@@ -14,4 +20,5 @@ KillMode=process
 TimeoutStopSec=900
 
 [Install]
-WantedBy=shutdown.target halt.target
+WantedBy=shutdown.target
+WantedBy=halt.target
