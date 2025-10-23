@@ -6,8 +6,7 @@
     name: apt-listchanges
 
 # template listchanges
-- when: unattended_upgrades.listchanges.config.src != None
-  name: Template /etc/apt/listchanges.conf
+- name: Template /etc/apt/listchanges.conf
   become: true
   ansible.builtin.template:
     src: listchanges.conf.j2
