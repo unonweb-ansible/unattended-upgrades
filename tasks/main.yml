@@ -63,8 +63,8 @@
   # apt-daily-upgrade
   - block:
 
-    # overrides
-    - when: unattended_upgrades.apt_daily_upgrade.service.src != None
+    # apt-daily-upgrade.service.d
+    - when: unattended_upgrades.apt_daily_upgrade.service.override != None
       block:
 
       # mkdir
@@ -78,11 +78,11 @@
           mode: o=rwx,g=rx,o=rx
 
       # cp service unit files
-      - name: Copy "{{ unattended_upgrades.apt_daily_upgrade.service.src }}" to "/etc/systemd/system/apt-daily-upgrade.service.d"
+      - name: Copy "{{ unattended_upgrades.apt_daily_upgrade.service.override }}" to "/etc/systemd/system/apt-daily-upgrade.service.d"
         become: true
         notify: Systemd daemon-reload
         ansible.builtin.copy:
-          src: "{{ unattended_upgrades.apt_daily_upgrade.service.src }}"
+          src: "apt-daily-upgrade.service.d/{{ unattended_upgrades.apt_daily_upgrade.service.override }}"
           dest: /etc/systemd/system/apt-daily-upgrade.service.d/override.conf
           force: true
           owner: root
@@ -96,8 +96,8 @@
         enabled: "{{ unattended_upgrades.apt_daily_upgrade.service.enabled }}"
         name: apt-daily-upgrade.service
 
-    # overrides
-    - when: unattended_upgrades.apt_daily_upgrade.timer.src != None
+    # apt-daily-upgrade.timer.d
+    - when: unattended_upgrades.apt_daily_upgrade.timer.override != None
       block:
 
       # mkdir
@@ -115,7 +115,7 @@
         become: true
         notify: Systemd daemon-reload
         ansible.builtin.copy:
-          src: "{{ unattended_upgrades.apt_daily_upgrade.timer.src }}"
+          src: "apt-daily-upgrade.timer.d/{{ unattended_upgrades.apt_daily_upgrade.timer.override }}"
           dest: /etc/systemd/system/apt-daily.timer.d/override.conf
           force: true
           owner: root
@@ -131,8 +131,9 @@
 
   # apt-daily
   - block:
-  
-    - when: unattended_upgrades.apt_daily.service.src != None
+
+    # apt-daily.service.d
+    - when: unattended_upgrades.apt_daily.service.override != None
       block:
 
       # mkdir
@@ -150,7 +151,7 @@
         become: true
         notify: Systemd daemon-reload
         ansible.builtin.copy:
-          src: "{{ unattended_upgrades.apt_daily.service.src }}"
+          src: "apt-daily.service.d/{{ unattended_upgrades.apt_daily.service.override }}"
           dest: /etc/systemd/system/apt-daily.service.d/override.conf
           force: true
           owner: root
@@ -164,7 +165,8 @@
         enabled: "{{ unattended_upgrades.apt_daily.service.enabled }}"
         name: apt-daily.service
 
-    - when: unattended_upgrades.apt_daily.timer.src != None
+    # apt-daily.timer.d
+    - when: unattended_upgrades.apt_daily.timer.override != None
       block:
 
       # mkdir
@@ -182,7 +184,7 @@
         become: true
         notify: Systemd daemon-reload
         ansible.builtin.copy:
-          src: "{{ unattended_upgrades.apt_daily.timer.src }}"
+          src: "apt-daily.timer.d/{{ unattended_upgrades.apt_daily.timer.override }}"
           dest: /etc/systemd/system/apt-daily.timer.d/override.conf
           force: true
           owner: root
