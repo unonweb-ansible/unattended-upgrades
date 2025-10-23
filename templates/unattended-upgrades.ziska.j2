@@ -1,0 +1,48 @@
+APT::Periodic::Enable "1";
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Download-Upgradeable-Packages "1";
+APT::Periodic::Unattended-Upgrade "1";
+APT::Periodic::AutocleanInterval "21";
+APT::Periodic::Verbose "2";
+
+Unattended-Upgrade::Allowed-Origins {
+    // "ORIGIN:ARCHIVE"
+    // debian
+	"Debian:stable-security";
+	"Debian:stable-updates";
+	"Debian:stable";
+    // code
+    "code stable:stable";
+	// spotify
+	"Spotify LTD:stable";
+	 // signal
+	". xenial:xenial";
+	// node
+	". nodistro:nodistro";
+	// nginx
+	"nginx:stable";
+	// edge
+	"edge stable:stable";
+	// mozilla
+	"namespaces/moz-fx-productdelivery-pr-38b5/repositories/mozilla:mozilla";
+};
+
+Unattended-Upgrade::Origins-Pattern {};
+Unattended-Upgrade::Package-Blacklist {};
+
+Unattended-Upgrade::AutoFixInterruptedDpkg "true";
+Unattended-Upgrade::MinimalSteps "true";
+
+Unattended-Upgrade::Mail "{{ unattended_upgrades.mail }}";
+Unattended-Upgrade::Sender "{{ inventory_hostname }}";
+Unattended-Upgrade::MailReport "on-change";
+
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+Unattended-Upgrade::Remove-New-Unused-Dependencies "true";
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+
+Unattended-Upgrade::Automatic-Reboot "false";
+
+Unattended-Upgrade::SyslogEnable "false";
+
+Unattended-Upgrade::OnlyOnACPower "false";
