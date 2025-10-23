@@ -11,6 +11,7 @@
     ansible.builtin.assert:
       that:
       - unattended_upgrades.config.src != None
+      - unattended_upgrades.mail != None
 
   # apt
   - name: Apt state {{ unattended_upgrades.apt.state }}
@@ -50,7 +51,7 @@
 
     # template listchanges
     - when: unattended_upgrades.listchanges.config.src != None
-      name: Copy listchanges.conf
+      name: Template /etc/apt/listchanges.conf
       become: true
       ansible.builtin.template:
         src: listchanges.conf.j2
