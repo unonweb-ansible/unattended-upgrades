@@ -48,12 +48,12 @@
         state: "{{ unattended_upgrades.listchanges.apt.state }}"
         name: apt-listchanges
 
-    # listchanges
+    # template listchanges
     - when: unattended_upgrades.listchanges.config.src != None
       name: Copy listchanges.conf
       become: true
-      ansible.builtin.copy:
-        src: "{{ unattended_upgrades.listchanges.config.src }}"
+      ansible.builtin.template:
+        src: listchanges.conf.j2
         dest: /etc/apt/listchanges.conf
         force: true # the remote file will be replaced when contents are different than the source
         owner: root

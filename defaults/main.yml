@@ -1,5 +1,6 @@
 ---
 unattended_upgrades:
+  mail:
   apt:
     state: present
   config:
@@ -22,5 +23,3 @@ unattended_upgrades:
   listchanges:
     apt:
       state: present
-    config:
-      src:
