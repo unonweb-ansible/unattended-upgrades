@@ -20,7 +20,7 @@ Unattended-Upgrade::AutoFixInterruptedDpkg "true";
 Unattended-Upgrade::MinimalSteps "true";
 
 Unattended-Upgrade::Mail "{{ unattended_upgrades.mail }}";
-Unattended-Upgrade::Sender "{{ inventory_hostname }}";
+Unattended-Upgrade::Sender "{{ unattended_upgrades.mail }}";
 Unattended-Upgrade::MailReport "on-change";
 
 Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
