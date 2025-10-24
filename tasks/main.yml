@@ -2,11 +2,16 @@
 - name: unattended-upgrades role
   tags:
   - unattended-upgrades
+  vars:
+    _debug: false
   block:
 
-  #- ansible.builtin.debug:
-  #    msg: "{{ unattended_upgrades }}"
-      
+  # debug
+  - when: _debug == true
+    ansible.builtin.debug:
+      msg: "{{ unattended_upgrades }}"
+  
+  # check
   - name: Check vars for unattended-upgrades role
     ansible.builtin.assert:
       that:
