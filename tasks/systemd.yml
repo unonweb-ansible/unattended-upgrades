@@ -1,0 +1,67 @@
+# cp
+- when: unattended_upgrades.systemd.cp | length > 0
+  name: Copy {{ unattended_upgrades.systemd.cp }}
+  become: true
+  notify: systemctl --system daemon-reload
+  loop: "{{ unattended_upgrades.systemd.cp }}"
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item.split('/')[-1] }}"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
+# reset
+- when: unattended_upgrades.systemd.reset | length > 0
+  name: Reset overrides {{ unattended_upgrades.systemd.reset }}
+  loop: "{{ unattended_upgrades.systemd.reset }}"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/systemd/system/{{ item }}.d"
+    state: absent
+
+# overrides
+- when: unattended_upgrades.systemd.overrides | length > 0
+  block:
+
+  # mkdir overrides
+  - name: Mkdir in /etc/systemd/system/...
+    become: true
+    loop: "{{ unattended_upgrades.systemd.overrides }}"
+    ansible.builtin.file:
+      path: "/etc/systemd/system/{{ item | dirname }}"
+      state: directory
+      owner: root
+      group: root
+      mode: o=rwx,g=rx,o=rx
+
+  # cp overrides
+  - name: Copy {{ unattended_upgrades.systemd.overrides }}
+    become: true
+    notify: Systemd daemon-reload
+    loop: "{{ unattended_upgrades.systemd.overrides }}"
+    ansible.builtin.copy:
+      src: "{{ item }}"
+      dest: "/etc/systemd/system/{{ item }}"
+      force: true
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
+
+# enable
+- when: unattended_upgrades.systemd.enable | length > 0
+  name: Enable {{ unattended_upgrades.systemd.enable }}
+  become: true
+  loop: "{{ unattended_upgrades.systemd.enable }}"
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+
+# disable
+- when: unattended_upgrades.systemd.disable | length > 0
+  name: Disable {{ unattended_upgrades.systemd.disable }}
+  become: true
+  loop: "{{ unattended_upgrades.systemd.disable }}"
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: false

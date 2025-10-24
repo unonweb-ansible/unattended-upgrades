@@ -27,7 +27,10 @@
       - unattended-upgrades
       - needrestart
       - powermgmt-base
-  
+
+  # systemd
+  - ansible.builtin.import_tasks: systemd.yml
+
   # template config file
   - when: unattended_upgrades.config.src != None
     name: Template 50unattended-upgrades
@@ -46,9 +49,3 @@
     - unattended_upgrades.listchanges.apt.state != None
     - unattended_upgrades.listchanges.apt.state != "absent"
     ansible.builtin.import_tasks: listchanges.yml
-  
-  # apt-daily-upgrade
-  - ansible.builtin.import_tasks: apt-daily-upgrade.yml
-
-  # apt-daily
-  - ansible.builtin.import_tasks: apt-daily.yml

@@ -6,20 +6,17 @@ unattended_upgrades:
   config:
     src:
     dst: /etc/apt/apt.conf.d/50unattended-upgrades
-  apt_daily_upgrade:
-    service:
-      override: # --> /etc/systemd/system/apt-daily-upgrade.service.d/override.conf
-      enabled: true
-    timer:
-      override: # --> /etc/systemd/system/apt-daily.timer.d/override.conf
-      enabled: false
-  apt_daily:
-    service:
-      override: # --> /etc/systemd/system/apt-daily.service.d/override.conf
-      enabled: true
-    timer:
-      override: # --> /etc/systemd/system/apt-daily.timer.d/override.conf
-      enabled: true
   listchanges:
     apt:
       state: present
+  systemd:
+    cp: []
+    enable: []
+    disable: []
+    overrides: [] # snapper-boot.service.d/override.conf -> /etc/systemd/system/snapper-boot.service.d/override.conf
+    reset: [] # units
+
+# apt-daily-upgrade.service
+# apt-daily-upgrade.timer
+# apt-daily.service
+# apt-daily.timer
