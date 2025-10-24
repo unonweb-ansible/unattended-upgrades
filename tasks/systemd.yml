@@ -38,7 +38,7 @@
   # cp overrides
   - name: Copy {{ unattended_upgrades.systemd.overrides }}
     become: true
-    notify: Systemd daemon-reload
+    notify: systemctl --system daemon-reload
     loop: "{{ unattended_upgrades.systemd.overrides }}"
     ansible.builtin.copy:
       src: "{{ item }}"
@@ -50,7 +50,7 @@
 
 # enable
 - when: unattended_upgrades.systemd.enable | length > 0
-  name: Enable {{ unattended_upgrades.systemd.enable }}
+  name: systemctl enable {{ unattended_upgrades.systemd.enable }}
   become: true
   loop: "{{ unattended_upgrades.systemd.enable }}"
   ansible.builtin.systemd_service:
@@ -59,9 +59,27 @@
 
 # disable
 - when: unattended_upgrades.systemd.disable | length > 0
-  name: Disable {{ unattended_upgrades.systemd.disable }}
+  name: systemctl disable {{ unattended_upgrades.systemd.disable }}
   become: true
   loop: "{{ unattended_upgrades.systemd.disable }}"
   ansible.builtin.systemd_service:
     name: "{{ item }}"
     enabled: false
+
+# start
+- when: unattended_upgrades.systemd.start | length > 0
+  name: systemctl start {{ unattended_upgrades.systemd.start }}
+  become: true
+  loop: "{{ unattended_upgrades.systemd.start }}"
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    state: started
+
+# stop
+- when: unattended_upgrades.systemd.stop | length > 0
+  name: systemctl stop {{ unattended_upgrades.systemd.stop }}
+  become: true
+  loop: "{{ unattended_upgrades.systemd.stop }}"
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    state: stopped

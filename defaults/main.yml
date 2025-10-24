@@ -13,6 +13,8 @@ unattended_upgrades:
     cp: []
     enable: []
     disable: []
+    start: []
+    stop: []
     overrides: [] # snapper-boot.service.d/override.conf -> /etc/systemd/system/snapper-boot.service.d/override.conf
     reset: [] # units
 
