@@ -33,7 +33,7 @@ Unattended-Upgrade::Package-Blacklist {};
 Unattended-Upgrade::AutoFixInterruptedDpkg "true";
 Unattended-Upgrade::MinimalSteps "true";
 
-Unattended-Upgrade::Mail "{{ unattended_upgrades.mail }}";
+Unattended-Upgrade::Mail "{{ unattended_upgrades_mail }}";
 Unattended-Upgrade::Sender "{{ inventory_hostname }}";
 Unattended-Upgrade::MailReport "on-change";
 
