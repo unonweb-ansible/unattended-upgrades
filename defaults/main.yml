@@ -1,23 +1,22 @@
 ---
-unattended_upgrades:
-  mail:
-  apt:
-    state: present
-  config:
-    src:
-    dst: /etc/apt/apt.conf.d/50unattended-upgrades
-  listchanges:
-    apt:
-      state: present
-  systemd:
-    cp: []
-    enable: []
-    disable: []
-    start: []
-    stop: []
-    overrides: [] # snapper-boot.service.d/override.conf -> /etc/systemd/system/snapper-boot.service.d/override.conf
-    reset: [] # units
-
+unattended_upgrades_config:
+unattended_upgrades_config_dst: /etc/apt/apt.conf.d/50unattended-upgrades
+unattended_upgrades_mail:
+unattended_upgrades_apt_install:
+- apt-listchanges
+- unattended-upgrades
+- needrestart
+- powermgmt-base
+unattended_upgrades_apt_remove: []
+unattended_upgrades_systemd_copy: []
+unattended_upgrades_systemd_template: []
+unattended_upgrades_systemd_reset: []
+unattended_upgrades_systemd_overrides: []
+unattended_upgrades_systemd_start: []
+unattended_upgrades_systemd_stop: []
+unattended_upgrades_systemd_enable: []
+unattended_upgrades_systemd_disable: []
+unattended_upgrades_listchanges_config: listchanges.conf.j2
 # apt-daily-upgrade.service
 # apt-daily-upgrade.timer
 # apt-daily.service

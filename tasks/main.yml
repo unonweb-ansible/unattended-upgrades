@@ -2,12 +2,10 @@
 - name: unattended-upgrades role
   tags:
   - unattended-upgrades
-  vars:
-    _debug: false
   block:
 
   # debug
-  - when: _debug == true
+  - when: false
     ansible.builtin.debug:
       msg: "{{ unattended_upgrades }}"
   
@@ -15,37 +13,49 @@
   - name: Check vars for unattended-upgrades role
     ansible.builtin.assert:
       that:
-      - unattended_upgrades.config.src != None
-      - unattended_upgrades.mail != None
+      - unattended_upgrades_config != None
+      - unattended_upgrades_mail != None
 
-  # apt
-  - name: Apt state {{ unattended_upgrades.apt.state }}
+  # apt install
+  - name: Apt install {{ unattended_upgrades_apt_install }}
     become: true
     ansible.builtin.apt:
-      state: "{{ unattended_upgrades.apt.state }}"
-      name:
-      - unattended-upgrades
-      - needrestart
-      - powermgmt-base
+      state: present
+      name: "{{ unattended_upgrades_apt_install }}"
+
+  # apt remove
+  - name: Apt remove {{ unattended_upgrades_apt_remove }}
+    become: true
+    ansible.builtin.apt:
+      state: absent
+      name: "{{ unattended_upgrades_apt_remove }}"
 
   # systemd
   - ansible.builtin.import_tasks: systemd.yml
 
   # template config file
-  - when: unattended_upgrades.config.src != None
+  - when: unattended_upgrades_config != None
     name: Template 50unattended-upgrades
     become: true
     notify: Restart unattended-upgrades
     ansible.builtin.template:
-      src: "{{ unattended_upgrades.config.src }}"
-      dest: "{{ unattended_upgrades.config.dst }}"
+      src: "{{ unattended_upgrades_config }}"
+      dest: "{{ unattended_upgrades_config_dst }}"
       force: true # the remote file will be replaced when contents are different than the source (default) 
       owner: root
       group: root
       mode: u=rw,g=r,o=r
 
-  # listchanges
-  - when: 
-    - unattended_upgrades.listchanges.apt.state != None
-    - unattended_upgrades.listchanges.apt.state != "absent"
-    ansible.builtin.import_tasks: listchanges.yml
+  # template listchanges
+  - when:
+    - "'apt-listchanges' in unattended_upgrades_apt_install"
+    - unattended_upgrades_listchanges_config != None
+    name: Template {{ unattended_upgrades_listchanges_config }}
+    become: true
+    ansible.builtin.template:
+      src: "{{ unattended_upgrades_listchanges_config }}"
+      dest: /etc/apt/listchanges.conf
+      force: true # the remote file will be replaced when contents are different than the source
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
