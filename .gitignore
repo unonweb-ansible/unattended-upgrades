@@ -1,3 +1,2 @@
-*fk*
-*franzk*
 .ansible/
+templates/unattended-upgrades.fk-non-functional.j2
