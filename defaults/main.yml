@@ -17,6 +17,7 @@ unattended_upgrades_systemd_start: []
 unattended_upgrades_systemd_stop: []
 unattended_upgrades_systemd_enable: []
 unattended_upgrades_systemd_disable: []
+# listchanges
 unattended_upgrades_listchanges_config: listchanges.conf.j2
 # apt-daily-upgrade.service
 # apt-daily-upgrade.timer
