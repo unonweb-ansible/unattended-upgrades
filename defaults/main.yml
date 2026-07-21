@@ -1,13 +1,22 @@
 ---
-unattended_upgrades_config:
-unattended_upgrades_config_dst: /etc/apt/apt.conf.d/50unattended-upgrades
 unattended_upgrades_mail:
+
+# APT
+# ===
 unattended_upgrades_apt_install:
 - apt-listchanges
 - unattended-upgrades
 - needrestart
 - powermgmt-base
 unattended_upgrades_apt_remove: []
+
+# CONFIG
+# ======
+unattended_upgrades_config:
+unattended_upgrades_config_dst: /etc/apt/apt.conf.d/50unattended-upgrades
+
+# SYSTEMD
+# =======
 unattended_upgrades_systemd_scope: system
 unattended_upgrades_systemd_copy: []
 unattended_upgrades_systemd_template: []
@@ -17,9 +26,11 @@ unattended_upgrades_systemd_start: []
 unattended_upgrades_systemd_stop: []
 unattended_upgrades_systemd_enable: []
 unattended_upgrades_systemd_disable: []
-# listchanges
-unattended_upgrades_listchanges_config: listchanges.conf.j2
 # apt-daily-upgrade.service
 # apt-daily-upgrade.timer
 # apt-daily.service
 # apt-daily.timer
+
+# LISTCHANGES
+# ===========
+unattended_upgrades_listchanges_config: listchanges.conf.j2
