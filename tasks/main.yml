@@ -1,5 +1,5 @@
 ---
-- name: unattended-upgrades role
+- name: apt-unattended-upgrades role
   tags:
   - apt-unattended-upgrades
   - unattended-upgrades
