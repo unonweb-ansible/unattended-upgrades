@@ -3,12 +3,12 @@ unattended_upgrades_mail:
 
 # APT
 # ===
-unattended_upgrades_apt_install:
+unattended_upgrades_install_apt_state: present
+unattended_upgrades_install_apt:
 - apt-listchanges
 - unattended-upgrades
 - needrestart
 - powermgmt-base
-unattended_upgrades_apt_remove: []
 
 # CONFIG
 # ======

@@ -37,7 +37,7 @@
 
   # template listchanges
   - when:
-    - "'apt-listchanges' in unattended_upgrades_apt_install"
+    - "'apt-listchanges' in unattended_upgrades_install_apt"
     - unattended_upgrades_listchanges_config != None
     name: Template {{ unattended_upgrades_listchanges_config }}
     become: true

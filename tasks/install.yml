@@ -1,14 +1,7 @@
 ---
-# apt install
-- name: Apt install {{ unattended_upgrades_apt_install }}
+# apt
+- name: Apt state {{ unattended_upgrades_install_apt_state }} {{ unattended_upgrades_install_apt }}
   become: true
   ansible.builtin.apt:
-    state: present
-    name: "{{ unattended_upgrades_apt_install }}"
-
-# apt remove
-- name: Apt remove {{ unattended_upgrades_apt_remove }}
-  become: true
-  ansible.builtin.apt:
-    state: absent
-    name: "{{ unattended_upgrades_apt_remove }}"
+    state: "{{ unattended_upgrades_install_apt_state }}"
+    name: "{{ unattended_upgrades_install_apt }}"
