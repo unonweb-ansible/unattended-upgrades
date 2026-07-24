@@ -1,0 +1,48 @@
+{% set cfg = unattended_upgrades_config_defaults | combine(unattended_upgrades_config_vars, recursive=True) %}
+
+// Periodic
+APT::Periodic::Enable "{{ cfg.periodic_enable }}";
+APT::Periodic::Update-Package-Lists "{{ cfg.periodic_update_package_lists }}";
+APT::Periodic::Download-Upgradeable-Packages "{{ cfg.periodic_download_upgradeable_packages }}";
+APT::Periodic::Unattended-Upgrade "{{ cfg.periodic_upgrade }}";
+APT::Periodic::AutocleanInterval "{{ cfg.periodic_autoclean_interval }}";
+APT::Periodic::Verbose "{{ cfg.periodic_verbose }}";
+
+// Origins
+Unattended-Upgrade::Allowed-Origins {
+	{% for origin in cfg.allowed_origins %}
+		"{{ origin }}";
+	{% endfor %}
+};
+
+// Blacklist
+{% if cfg.package_blacklist | length > 0 %}
+Unattended-Upgrade::Package-Blacklist {
+	{% for pkg in unattended_package_blacklist %}
+		"{{ pkg }}";
+	{% endfor %}
+};
+{% else %}
+Unattended-Upgrade::Package-Blacklist {};
+{% endif %}
+
+// Notification
+{% if cfg.mail != None %}
+Unattended-Upgrade::Mail "{{ cfg.mail }}";
+Unattended-Upgrade::Sender "{{ cfg.sender }}";
+Unattended-Upgrade::MailReport "{{ cfg.mail_report }}";
+{% endif %}
+
+// Behavioral Controls
+Unattended-Upgrade::AutoFixInterruptedDpkg "{{ cfg.autofix_interrupted_dpkg }}";
+Unattended-Upgrade::MinimalSteps "{{ cfg.minimal_steps }}";
+
+// Cleanup & Maintenance
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "{{ cfg.remove_unused_kernel_packages }}";
+Unattended-Upgrade::Remove-New-Unused-Dependencies "{{ cfg.remove_new_unused_dependencies }}";
+Unattended-Upgrade::Remove-Unused-Dependencies "{{ cfg.remove_unused_dependencies }}";
+
+// System
+Unattended-Upgrade::Automatic-Reboot "{{ cfg.automatic_reboot }}";
+Unattended-Upgrade::SyslogEnable "{{ cfg.syslog_enable }}";
+Unattended-Upgrade::OnlyOnACPower "{{ cfg.only_on_ac_power }}";

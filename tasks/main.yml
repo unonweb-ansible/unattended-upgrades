@@ -13,8 +13,8 @@
   - name: Check vars for unattended-upgrades role
     ansible.builtin.assert:
       that:
-      - unattended_upgrades_config != None
-      - unattended_upgrades_mail != None
+      - unattended_upgrades_config_template != None
+      - unattended_upgrades_config_vars['mail'] != None
 
   # install
   - ansible.builtin.import_tasks: install.yml
@@ -24,11 +24,11 @@
 
   # template config file
   - name: Template {{ unattended_upgrades_config_dst }}
-    when: unattended_upgrades_config != None
+    when: unattended_upgrades_config_template != None
     become: true
     notify: systemctl restart unattended-upgrades.service
     ansible.builtin.template:
-      src: "{{ unattended_upgrades_config }}"
+      src: "{{ unattended_upgrades_config_template }}"
       dest: "{{ unattended_upgrades_config_dst }}"
       force: true # file will be replaced when contents are different than the source (default) 
       owner: root
