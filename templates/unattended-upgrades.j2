@@ -34,15 +34,15 @@ Unattended-Upgrade::MailReport "{{ cfg.mail_report }}";
 {% endif %}
 
 // Behavioral Controls
-Unattended-Upgrade::AutoFixInterruptedDpkg "{{ cfg.autofix_interrupted_dpkg }}";
-Unattended-Upgrade::MinimalSteps "{{ cfg.minimal_steps }}";
+Unattended-Upgrade::AutoFixInterruptedDpkg "{{ cfg.autofix_interrupted_dpkg | bool | lower }}";
+Unattended-Upgrade::MinimalSteps "{{ cfg.minimal_steps | bool | lower }}";
 
 // Cleanup & Maintenance
-Unattended-Upgrade::Remove-Unused-Kernel-Packages "{{ cfg.remove_unused_kernel_packages }}";
-Unattended-Upgrade::Remove-New-Unused-Dependencies "{{ cfg.remove_new_unused_dependencies }}";
-Unattended-Upgrade::Remove-Unused-Dependencies "{{ cfg.remove_unused_dependencies }}";
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "{{ cfg.remove_unused_kernel_packages | bool | lower }}";
+Unattended-Upgrade::Remove-New-Unused-Dependencies "{{ cfg.remove_new_unused_dependencies | bool | lower }}";
+Unattended-Upgrade::Remove-Unused-Dependencies "{{ cfg.remove_unused_dependencies | bool | lower }}";
 
 // System
-Unattended-Upgrade::Automatic-Reboot "{{ cfg.automatic_reboot }}";
-Unattended-Upgrade::SyslogEnable "{{ cfg.syslog_enable }}";
-Unattended-Upgrade::OnlyOnACPower "{{ cfg.only_on_ac_power }}";
+Unattended-Upgrade::Automatic-Reboot "{{ cfg.automatic_reboot | bool | lower }}";
+Unattended-Upgrade::SyslogEnable "{{ cfg.syslog_enable | bool | lower }}";
+Unattended-Upgrade::OnlyOnACPower "{{ cfg.only_on_ac_power | bool | lower }}";
