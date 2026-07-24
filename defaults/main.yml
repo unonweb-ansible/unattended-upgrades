@@ -10,7 +10,7 @@ unattended_upgrades_install_apt:
 
 # CONFIG
 # ======
-unattended_upgrades_config_template:
+unattended_upgrades_config_template: unattended-upgrades.j2
 unattended_upgrades_config_dst: /etc/apt/apt.conf.d/50unattended-upgrades
 unattended_upgrades_config_vars: {}
 unattended_upgrades_config_defaults:
