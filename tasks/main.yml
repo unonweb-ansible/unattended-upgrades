@@ -1,6 +1,7 @@
 ---
 - name: unattended-upgrades role
   tags:
+  - apt-unattended-upgrades
   - unattended-upgrades
   block:
 
