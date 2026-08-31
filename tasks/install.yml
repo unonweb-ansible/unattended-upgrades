@@ -1,0 +1,7 @@
+---
+# apt
+- name: Apt state {{ unattended_upgrades_install_apt_state }} {{ unattended_upgrades_install_apt }}
+  become: true
+  ansible.builtin.apt:
+    state: "{{ unattended_upgrades_install_apt_state }}"
+    name: "{{ unattended_upgrades_install_apt }}"

@@ -1,13 +1,51 @@
 ---
-unattended_upgrades_config:
-unattended_upgrades_config_dst: /etc/apt/apt.conf.d/50unattended-upgrades
-unattended_upgrades_mail:
-unattended_upgrades_apt_install:
+# APT
+# ===
+unattended_upgrades_install_apt_state: present
+unattended_upgrades_install_apt:
 - apt-listchanges
 - unattended-upgrades
 - needrestart
 - powermgmt-base
-unattended_upgrades_apt_remove: []
+
+# CONFIG
+# ======
+unattended_upgrades_config_template: unattended-upgrades.j2
+unattended_upgrades_config_dst: /etc/apt/apt.conf.d/50unattended-upgrades
+unattended_upgrades_config_vars: {}
+unattended_upgrades_config_defaults:
+  # periodic
+  periodic_enable: 1
+  periodic_update_package_lists: 1
+  periodic_download_upgradeable_packages: 1
+  periodic_upgrade: 1
+  periodic_autoclean_interval: 21
+  periodic_verbose: 2
+  # origins
+  allowed_origins:
+  - "Debian:stable-security"
+  - "Debian:stable-updates"
+  # blacklist
+  package_blacklist: []
+  # notify
+  mail:
+  sender: "{{ inventory_hostname }}"
+  mail_report: on-change
+  # behaviour
+  autofix_interrupted_dpkg: true
+  minimal_steps: true
+  # cleanup
+  remove_unused_kernel_packages: true
+  remove_new_unused_dependencies: true
+  remove_unused_dependencies: true
+  # system
+  automatic_reboot: false
+  syslog_enable: false
+  only_on_ac_power: false
+
+
+# SYSTEMD
+# =======
 unattended_upgrades_systemd_scope: system
 unattended_upgrades_systemd_copy: []
 unattended_upgrades_systemd_template: []
@@ -17,8 +55,11 @@ unattended_upgrades_systemd_start: []
 unattended_upgrades_systemd_stop: []
 unattended_upgrades_systemd_enable: []
 unattended_upgrades_systemd_disable: []
-unattended_upgrades_listchanges_config: listchanges.conf.j2
 # apt-daily-upgrade.service
 # apt-daily-upgrade.timer
 # apt-daily.service
 # apt-daily.timer
+
+# LISTCHANGES
+# ===========
+unattended_upgrades_listchanges_config: listchanges.conf.j2

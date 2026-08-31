@@ -1,6 +1,7 @@
 ---
-- name: unattended-upgrades role
+- name: apt-unattended-upgrades role
   tags:
+  - apt-unattended-upgrades
   - unattended-upgrades
   block:
 
@@ -13,42 +14,31 @@
   - name: Check vars for unattended-upgrades role
     ansible.builtin.assert:
       that:
-      - unattended_upgrades_config != None
-      - unattended_upgrades_mail != None
+      - unattended_upgrades_config_template != None
+      - unattended_upgrades_config_vars['mail'] != None
 
-  # apt install
-  - name: Apt install {{ unattended_upgrades_apt_install }}
-    become: true
-    ansible.builtin.apt:
-      state: present
-      name: "{{ unattended_upgrades_apt_install }}"
-
-  # apt remove
-  - name: Apt remove {{ unattended_upgrades_apt_remove }}
-    become: true
-    ansible.builtin.apt:
-      state: absent
-      name: "{{ unattended_upgrades_apt_remove }}"
+  # install
+  - ansible.builtin.import_tasks: install.yml
 
   # systemd
   - ansible.builtin.import_tasks: systemd.yml
 
   # template config file
-  - when: unattended_upgrades_config != None
-    name: Template 50unattended-upgrades
+  - name: Template {{ unattended_upgrades_config_dst }}
+    when: unattended_upgrades_config_template != None
     become: true
-    notify: Restart unattended-upgrades
+    notify: systemctl restart unattended-upgrades.service
     ansible.builtin.template:
-      src: "{{ unattended_upgrades_config }}"
+      src: "{{ unattended_upgrades_config_template }}"
       dest: "{{ unattended_upgrades_config_dst }}"
-      force: true # the remote file will be replaced when contents are different than the source (default) 
+      force: true # file will be replaced when contents are different than the source (default) 
       owner: root
       group: root
       mode: u=rw,g=r,o=r
 
   # template listchanges
   - when:
-    - "'apt-listchanges' in unattended_upgrades_apt_install"
+    - "'apt-listchanges' in unattended_upgrades_install_apt"
     - unattended_upgrades_listchanges_config != None
     name: Template {{ unattended_upgrades_listchanges_config }}
     become: true

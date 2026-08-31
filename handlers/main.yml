@@ -1,14 +1,8 @@
 ---
-- name: Restart unattended-upgrades
+- name: systemctl restart unattended-upgrades.service
   become: true
-  ansible.builtin.service:
-    name: unattended-upgrades
-    state: restarted
-
-- name: Restart apt-daily-upgrade.timer
-  become: true
-  ansible.builtin.service:
-    name: apt-daily-upgrade.timer
+  ansible.builtin.systemd_service:
+    name: unattended-upgrades.service
     state: restarted
 
 - name: systemctl --system daemon-reload
